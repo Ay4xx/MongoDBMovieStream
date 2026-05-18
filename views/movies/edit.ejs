@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar película | MovieStream</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container">
+    <nav class="navbar">
+      <a href="/movies">Volver a películas</a>
+      <a href="/">Inicio</a>
+    </nav>
+
+    <h1>Editar película</h1>
+
+    <form class="form" method="POST" action="/movies/<%= movie._id %>?_method=PUT">
+      <label>Título</label>
+      <input name="title" value="<%= movie.title %>" required>
+
+      <label>Año</label>
+      <input name="year" type="number" value="<%= movie.year %>" required>
+
+      <label>Duración en minutos</label>
+      <input name="durationMinutes" type="number" value="<%= movie.durationMinutes %>" required>
+
+      <label>Descripción</label>
+      <textarea name="description" required><%= movie.description %></textarea>
+
+      <label>Rating promedio</label>
+      <input name="ratingAverage" type="number" step="0.1" min="0" max="5" value="<%= movie.ratingAverage %>" required>
+
+      <label>Géneros</label>
+      <div class="checkbox-group">
+        <% genres.forEach(genre => { %>
+          <label class="checkbox">
+            <input 
+              type="checkbox" 
+              name="genres" 
+              value="<%= genre._id %>"
+              <%= movie.genres.some(g => g._id.toString() === genre._id.toString()) ? "checked" : "" %>
+            >
+            <%= genre.name %>
+          </label>
+        <% }) %>
+      </div>
+
+      <label>Actor 1</label>
+      <select name="actor1">
+        <option value="">Selecciona un actor</option>
+        <% actors.forEach(actor => { %>
+          <option 
+            value="<%= actor._id %>"
+            <%= movie.actors[0] && movie.actors[0]._id.toString() === actor._id.toString() ? "selected" : "" %>
+          >
+            <%= actor.name %>
+          </option>
+        <% }) %>
+      </select>
+
+      <label>Rol actor 1</label>
+      <input name="role1" value="<%= movie.actors[0] ? movie.actors[0].role : '' %>">
+
+      <label>Actor 2</label>
+      <select name="actor2">
+        <option value="">Selecciona un actor</option>
+        <% actors.forEach(actor => { %>
+          <option 
+            value="<%= actor._id %>"
+            <%= movie.actors[1] && movie.actors[1]._id.toString() === actor._id.toString() ? "selected" : "" %>
+          >
+            <%= actor.name %>
+          </option>
+        <% }) %>
+      </select>
+
+      <label>Rol actor 2</label>
+      <input name="role2" value="<%= movie.actors[1] ? movie.actors[1].role : '' %>">
+
+      <button type="submit">Actualizar película</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Películas | MovieStream</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="container">
+    <nav class="navbar">
+      <a href="/">Inicio</a>
+      <a href="/genres">Géneros</a>
+      <a href="/movies/new">Nueva película</a>
+    </nav>
+
+    <h1>Películas</h1>
+
+    <form class="search-form" method="GET" action="/movies">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Buscar por título, género o actor"
+        value="<%= search %>"
+      >
+      <button type="submit">Buscar</button>
+    </form>
+
+    <div class="grid">
+      <% movies.forEach(movie => { %>
+        <article class="card">
+          <h2><%= movie.title %></h2>
+          <p><strong>Año:</strong> <%= movie.year %></p>
+          <p><strong>Duración:</strong> <%= movie.durationMinutes %> min</p>
+          <p><strong>Rating:</strong> <%= movie.ratingAverage %></p>
+          <p><%= movie.description %></p>
+
+          <p>
+            <strong>Géneros:</strong>
+            <%= movie.genres.map(g => g.name).join(", ") %>
+          </p>
+
+          <p>
+            <strong>Actores:</strong>
+            <%= movie.actors.map(a => `${a.name} como ${a.role}`).join(", ") %>
+          </p>
+
+          <div class="card-actions">
+            <a class="button small" href="/movies/<%= movie._id %>/edit">Editar</a>
+
+            <form method="POST" action="/movies/<%= movie._id %>?_method=DELETE">
+              <button class="danger small" type="submit">Eliminar</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </main>
+</body>
+</html>
